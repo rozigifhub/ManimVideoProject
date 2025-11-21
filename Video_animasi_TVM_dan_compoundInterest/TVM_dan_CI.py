@@ -28,18 +28,18 @@ class Introduction(Scene):
         self.wait(2)
 
 class EllipseBubble(VGroup):
-    def __init__(self, text, scale=0.5, **kwargs):
+    def __init__(self, text, scale=0.3, **kwargs):
         super().__init__(**kwargs)
 
         # Bubble utama bentuk elips
-        bubble = Ellipse(width=4, height=2, color=WHITE).set_fill(WHITE, opacity=1)
+        bubble = Ellipse(width=3, height=1.5, color=WHITE).set_fill(BLACK, opacity=1)
 
         # Teks di dalam bubble
         bubble_text = Text(text).scale(scale)
         bubble_text.move_to(bubble.get_center())
 
         # "Ekor" bubble: titik kecil
-        tail = Circle(radius=0.15, color=WHITE).set_fill(WHITE, opacity=1)
+        tail = Circle(radius=0.15, color=WHITE).set_fill(BLACK, opacity=1)
 
         # Grouping
         self.add(bubble, tail, bubble_text)
@@ -56,7 +56,13 @@ class EllipseBubble(VGroup):
         return self
 
 
+
+
 class PerbandinganDO(Scene):
+    def ganti_tex(self, mobject, new_text):
+        new_obj = MathTex(new_text).move_to(mobject)
+        return new_obj
+    
     def construct(self):
         #object emote
         jojo = SVGMobject("asset/jojo.svg").scale(0.8).move_to(LEFT*3)
@@ -81,7 +87,7 @@ class PerbandinganDO(Scene):
         uangText2.next_to(namaKhohar, UP * 1.5)
 
         #object perhitungan
-        rumusJojo = MathTex("I ", "= ", "P ", r" \times ", "r ", r" \times ", "t ")
+        rumusJojo = MathTex("A ", "= ", "P ", r" \times ", r"(1 + ", "r ", r" \times ", "t ",")")
 
         # Animasi
         self.play(FadeIn(jojo), FadeIn(namaJojo))
@@ -113,13 +119,13 @@ class PerbandinganDO(Scene):
         self.play(FadeIn(uangText1, shift = DOWN, run_time = 0.5))
         self.wait(2)
 
-        bubble1 = EllipseBubble("Nih, sejuta!").next_to(jojo, RIGHT)
+        bubble1 = EllipseBubble("Nih, sejuta!").next_to(jojo, DOWN)
         bubble1.point_tail_to(jojo)  # arahkan ekor ke Jojo
         self.play(FadeIn(bubble1))
         self.wait(1)
         self.play(FadeOut(bubble1))
 
-        bubble2 = EllipseBubble("Kamu dapet bunga 50%/tahun ya", scale=0.45).next_to(bisnisJojo, DOWN)
+        bubble2 = EllipseBubble("Kamu dapet bunga 50%/tahun ya", scale=0.28).next_to(bisnisJojo, DOWN)
         bubble2.point_tail_to(bisnisJojo)
         self.play(FadeIn(bubble2))
         self.wait(1)
@@ -137,8 +143,8 @@ class PerbandinganDO(Scene):
         )
         framebox1 = SurroundingRectangle(rumusJojo[0], buff = .1)
         framebox2 = SurroundingRectangle(rumusJojo[2], buff = .1)
-        framebox3 = SurroundingRectangle(rumusJojo[4], buff = .1)
-        framebox4 = SurroundingRectangle(rumusJojo[6], buff = .1)
+        framebox3 = SurroundingRectangle(rumusJojo[5], buff = .1)
+        framebox4 = SurroundingRectangle(rumusJojo[7], buff = .1)
 
         self.play(
             Create(framebox1),
@@ -155,5 +161,39 @@ class PerbandinganDO(Scene):
         self.play(
             ReplacementTransform(framebox3,framebox4)
         )
-        self.wait
+        self.play(Uncreate(framebox4))
+        self.wait(1.5)
+
+        #perhitungan
+        rumusBaru1= MathTex(
+            "A", "=", "1.000.000", r"\times", r"(1 + 0.5 \times 1)"
+        ).move_to(rumusJojo)
+        rumusBaru2 = MathTex(
+            "A", "=", "1.500.000"
+        ).move_to(rumusJojo)
+        rumusBaru3 = MathTex(
+            "A = ", "1.500.000, ", "2.000.000, ", "2.500.000", "..."
+        ).move_to(rumusJojo)
+
+        # Sembunyikan dulu elemen ke-1 sampai akhir
+        for i in range(1, len(rumusBaru3)):
+            rumusBaru3[i].set_opacity(0)
+
+        # transform tahap sebelumnya
+        self.play(TransformMatchingTex(rumusJojo, rumusBaru1))
+        self.play(TransformMatchingTex(rumusBaru1, rumusBaru2))
+        jojoGroup = VGroup(jojo, namaJojo)
+        self.play(jojoGroup.animate.move_to(LEFT * 3.75))
+
+
+        # transform ke rumusBaru3 (hanya A= yang kelihatan)
+        self.play(TransformMatchingTex(rumusBaru2, rumusBaru3), run_time=1.5)
+
+        # munculkan angka satu per satu
+        self.play(FadeIn(rumusBaru3[1].set_opacity(1), shift=UP), run_time=0.8)
+        self.play(FadeIn(rumusBaru3[2].set_opacity(1), shift=UP), run_time=0.8)
+        self.play(FadeIn(rumusBaru3[3].set_opacity(1), shift=UP), run_time=0.8)
+        self.play(FadeIn(rumusBaru3[4].set_opacity(1), shift=UP), run_time=0.8)
+
+
         
