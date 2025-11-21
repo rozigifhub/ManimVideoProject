@@ -194,6 +194,7 @@ class PerbandinganDO(Scene):
         self.play(FadeIn(rumusBaru3[2].set_opacity(1), shift=UP), run_time=0.8)
         self.play(FadeIn(rumusBaru3[3].set_opacity(1), shift=UP), run_time=0.8)
         self.play(FadeIn(rumusBaru3[4].set_opacity(1), shift=UP), run_time=0.8)
+        
 
 
         
