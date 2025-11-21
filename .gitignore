@@ -1,0 +1,24 @@
+# venv
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Manim output
+media/
+*/media/
+**/media/
+
+# Videos, images, and assets generated
+videos/
+images/
+partial_movie_files/
+
+# VSCode
+.vscode/
+
+# OS junk
+Thumbs.db
+.DS_Store
