@@ -190,12 +190,28 @@ class PerbandinganDO(Scene):
         self.play(TransformMatchingTex(rumusBaru2, rumusBaru3), run_time=1.5)
 
         # munculkan angka satu per satu
-        self.play(FadeIn(rumusBaru3[1].set_opacity(1), shift=UP), run_time=0.8)
-        self.play(FadeIn(rumusBaru3[2].set_opacity(1), shift=UP), run_time=0.8)
-        self.play(FadeIn(rumusBaru3[3].set_opacity(1), shift=UP), run_time=0.8)
-        self.play(FadeIn(rumusBaru3[4].set_opacity(1), shift=UP), run_time=0.8)
+
+        self.play(FadeIn(rumusBaru3[1].set_opacity(1), shift=UP), run_time=0.8) 
+        self.play(FadeIn(rumusBaru3[2].set_opacity(1), shift=UP), run_time=0.8) 
+        self.play(FadeIn(rumusBaru3[3].set_opacity(1), shift=UP), run_time=0.8) 
+        self.play(FadeIn(rumusBaru3[4].set_opacity(1), shift=UP), run_time=0.8) 
+        self.wait(1) 
+        self.play(
+            FadeOut(rumusBaru3),
+            FadeOut(jojo),
+            FadeOut(namaJojo)
+        ) 
+        self.wait(2.5)
+
+        #jojo graph
+        ax = Axes(
+            x_range=[0, 10, 1],
+            y_range=[0, 6, 0.5],
+            tips=False,
+            axis_config={"include_numbers": True},
+            y_axis_config={"include_numbers": True},
+        )
+        labels = ax.get_axis_labels(x_label="Tahun", y_label="juta")
+        graph = ax.plot(lambda x: 1000000*(1+0.5*x)/1000000, x_range=[0, 10, 1], use_smoothing=False)
+        self.play(FadeIn(self.add(ax, graph,labels)))
         self.wait(1)
-
-
-
-        
