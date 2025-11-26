@@ -68,7 +68,7 @@ class PerbandinganDO(Scene):
         jojo = SVGMobject("asset/jojo.svg").scale(0.8).move_to(LEFT*3)
         khohar = SVGMobject("asset/Khohar.svg").scale(0.8).move_to(RIGHT*3)
         #object nama
-        namaJojo = Text("Jojo").scale(0.5)
+        namaJojo = Text("ROZI").scale(0.5)
         namaKhohar = Text("Khohar").scale(0.5)
         
         namaJojo.next_to(jojo, UP)
@@ -213,5 +213,5 @@ class PerbandinganDO(Scene):
         )
         labels = ax.get_axis_labels(x_label="Tahun", y_label="juta")
         graph = ax.plot(lambda x: 1000000*(1+0.5*x)/1000000, x_range=[0, 10, 1], use_smoothing=False)
-        self.play(FadeIn(self.add(ax, graph,labels)))
+        self.add(ax, graph,labels)
         self.wait(1)
